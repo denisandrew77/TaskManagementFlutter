@@ -5,11 +5,8 @@ class FlightCard extends StatelessWidget {
   final Flight flight;
   final VoidCallback onTap;
 
-  const FlightCard({
-    Key? key,
-    required this.flight,
-    required this.onTap,
-  }) : super(key: key);
+  const FlightCard({Key? key, required this.flight, required this.onTap})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +39,10 @@ class FlightCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.blue.shade100,
                     borderRadius: BorderRadius.circular(4),
@@ -74,26 +74,17 @@ class FlightCard extends StatelessWidget {
                     ),
                     Text(
                       flight.departureCity,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),
                 Column(
                   children: [
-                    Icon(
-                      Icons.flight_takeoff,
-                      color: Colors.blue.shade600,
-                    ),
+                    Icon(Icons.flight_takeoff, color: Colors.blue.shade600),
                     const SizedBox(height: 4),
                     Text(
                       flight.duration,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 10, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -109,10 +100,7 @@ class FlightCard extends StatelessWidget {
                     ),
                     Text(
                       flight.arrivalCity,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),

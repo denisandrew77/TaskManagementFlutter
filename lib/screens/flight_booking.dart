@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../common/app_strings.dart';
+import '../common/app_theme.dart';
 import '../models/flight.dart';
+import '../utils/validators.dart';
 
 class FlightBookingScreen extends StatefulWidget {
   final Flight flight;
@@ -76,14 +79,14 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Booking Confirmation'),
+        title: const Text(AppStrings.bookingConfirmation),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Flight: ${widget.flight.flightNumber}',
+                '${AppStrings.flight}: ${widget.flight.flightNumber}',
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -92,33 +95,33 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Total: \$${(widget.flight.price * widget.passengers).toStringAsFixed(2)}',
+                '${AppStrings.total}: \$${(widget.flight.price * widget.passengers).toStringAsFixed(2)}',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green.shade600,
+                  color: AppTheme.successGreen,
                 ),
               ),
               const SizedBox(height: 16),
               const Text(
-                'Passengers:',
+                '${AppStrings.passengers}:',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               ...passengerDetails.asMap().entries.map(
-                    (entry) => Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Text(
-                        '${entry.key + 1}. ${entry.value['name']} - ${entry.value['seatPreference']}',
-                      ),
-                    ),
+                (entry) => Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    '${entry.key + 1}. ${entry.value['name']} - ${entry.value['seatPreference']}',
                   ),
+                ),
+              ),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: const Text(AppStrings.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -126,7 +129,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    'Booking confirmed! Confirmation sent to ${passengerDetails[0]['email']}',
+                    '${AppStrings.bookingSuccessful} ${AppStrings.confirmationSent} ${passengerDetails[0]['email']}',
                   ),
                   backgroundColor: Colors.green,
                   duration: const Duration(seconds: 3),
@@ -135,9 +138,9 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green.shade600,
+              backgroundColor: AppTheme.successGreen,
             ),
-            child: const Text('Confirm Booking'),
+            child: const Text(AppStrings.confirm),
           ),
         ],
       ),
@@ -158,11 +161,9 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Passenger Details',
+          AppStrings.passengerInfo,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue.shade600,
-        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -172,7 +173,7 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
         child: Column(
           children: [
             Container(
-              color: Colors.blue.shade600,
+              color: AppTheme.primaryBlueShade600,
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,18 +181,15 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                   Text(
                     '${widget.flight.airline} - ${widget.flight.flightNumber}',
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Passenger ${currentPassenger + 1} of ${widget.passengers}',
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
+                    '${AppStrings.passengerN} ${currentPassenger + 1} of ${widget.passengers}',
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                 ],
               ),
@@ -199,29 +197,13 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
             Container(
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                  ),
-                ],
-              ),
+              decoration: AppTheme.cardDecoration(),
               child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Full Name',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey,
-                      ),
-                    ),
+                    const Text(AppStrings.fullName, style: AppTheme.labelStyle),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _nameController,
@@ -232,22 +214,10 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                         ),
                         prefixIcon: const Icon(Icons.person),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter name';
-                        }
-                        return null;
-                      },
+                      validator: Validators.validateName,
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Email',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey,
-                      ),
-                    ),
+                    const Text(AppStrings.email, style: AppTheme.labelStyle),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _emailController,
@@ -259,24 +229,12 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                         prefixIcon: const Icon(Icons.email),
                       ),
                       keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter email';
-                        }
-                        if (!value.contains('@')) {
-                          return 'Please enter valid email';
-                        }
-                        return null;
-                      },
+                      validator: Validators.validateEmail,
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      'Phone Number',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey,
-                      ),
+                      AppStrings.phoneNumber,
+                      style: AppTheme.labelStyle,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
@@ -289,21 +247,12 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                         prefixIcon: const Icon(Icons.phone),
                       ),
                       keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter phone number';
-                        }
-                        return null;
-                      },
+                      validator: Validators.validatePhone,
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      'Passport Number',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey,
-                      ),
+                      AppStrings.passportNumber,
+                      style: AppTheme.labelStyle,
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
@@ -315,33 +264,30 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                         ),
                         prefixIcon: const Icon(Icons.assignment),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter passport number';
-                        }
-                        return null;
-                      },
+                      validator: Validators.validatePassport,
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      'Seat Preference',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey,
-                      ),
+                      AppStrings.seatPreference,
+                      style: AppTheme.labelStyle,
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
                       value: _selectedSeatPreference,
-                      items: ['Standard', 'Window', 'Aisle', 'Exit Row']
-                          .map(
-                            (seat) => DropdownMenuItem(
-                              value: seat,
-                              child: Text(seat),
-                            ),
-                          )
-                          .toList(),
+                      items:
+                          [
+                                AppStrings.seatStandard,
+                                AppStrings.seatWindow,
+                                AppStrings.seatAisle,
+                                'Exit Row',
+                              ]
+                              .map(
+                                (seat) => DropdownMenuItem(
+                                  value: seat,
+                                  child: Text(seat),
+                                ),
+                              )
+                              .toList(),
                       onChanged: (value) {
                         setState(() {
                           _selectedSeatPreference = value ?? 'Standard';
@@ -359,22 +305,11 @@ class _FlightBookingScreenState extends State<FlightBookingScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: _savePassengerDetails,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue.shade600,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
                         child: Text(
                           currentPassenger < widget.passengers - 1
-                              ? 'Next Passenger'
-                              : 'Continue to Payment',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                              ? AppStrings.next
+                              : AppStrings.bookFlight,
+                          style: AppTheme.buttonTextStyle,
                         ),
                       ),
                     ),

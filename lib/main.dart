@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'common/app_strings.dart';
+import 'common/app_theme.dart';
 import 'screens/flight_search.dart';
 
 void main() {
@@ -11,11 +13,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flight Reservation',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-      ),
+      title: AppStrings.appTitle,
+      theme: AppTheme.lightTheme,
       home: const FlightSearchScreen(),
     );
   }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import '../common/app_strings.dart';
+import '../common/app_theme.dart';
+import '../data/flight_data.dart';
 import '../models/flight.dart';
+import '../utils/formatters.dart';
 import '../widgets/expandable_flight_card.dart';
 
 class FlightListScreen extends StatefulWidget {
@@ -27,92 +31,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
   @override
   void initState() {
     super.initState();
-    flights = _generateFlights();
-  }
-
-  List<Flight> _generateFlights() {
-    return [
-      Flight(
-        id: '1',
-        airline: 'Blue Airways',
-        departureCity: widget.departure,
-        arrivalCity: widget.arrival,
-        departureTime: '08:00',
-        arrivalTime: '11:30',
-        duration: '5h 30m',
-        price: 299.99,
-        seats: 145,
-        aircraftType: 'Boeing 737',
-        flightNumber: 'BA102',
-        seatPitch: '31 inches',
-        mealProvided: true,
-        mealType: 'Breakfast & Snacks',
-      ),
-      Flight(
-        id: '2',
-        airline: 'SkyLine Airlines',
-        departureCity: widget.departure,
-        arrivalCity: widget.arrival,
-        departureTime: '10:15',
-        arrivalTime: '13:45',
-        duration: '5h 30m',
-        price: 249.99,
-        seats: 89,
-        aircraftType: 'Airbus A320',
-        flightNumber: 'SL205',
-        seatPitch: '30 inches',
-        mealProvided: false,
-        mealType: '',
-      ),
-      Flight(
-        id: '3',
-        airline: 'Red Star Aviation',
-        departureCity: widget.departure,
-        arrivalCity: widget.arrival,
-        departureTime: '14:20',
-        arrivalTime: '17:50',
-        duration: '5h 30m',
-        price: 349.99,
-        seats: 220,
-        aircraftType: 'Boeing 787',
-        flightNumber: 'RSA512',
-        seatPitch: '32 inches',
-        mealProvided: true,
-        mealType: 'Full Service Meal',
-      ),
-      Flight(
-        id: '4',
-        airline: 'Blue Airways',
-        departureCity: widget.departure,
-        arrivalCity: widget.arrival,
-        departureTime: '16:00',
-        arrivalTime: '19:30',
-        duration: '5h 30m',
-        price: 279.99,
-        seats: 156,
-        aircraftType: 'Airbus A321',
-        flightNumber: 'BA318',
-        seatPitch: '31 inches',
-        mealProvided: true,
-        mealType: 'Lunch & Beverages',
-      ),
-      Flight(
-        id: '5',
-        airline: 'SkyLine Airlines',
-        departureCity: widget.departure,
-        arrivalCity: widget.arrival,
-        departureTime: '18:45',
-        arrivalTime: '22:15',
-        duration: '5h 30m',
-        price: 199.99,
-        seats: 64,
-        aircraftType: 'Boeing 737',
-        flightNumber: 'SL412',
-        seatPitch: '30 inches',
-        mealProvided: false,
-        mealType: '',
-      ),
-    ];
+    flights = FlightData.generateFlights(widget.departure, widget.arrival);
   }
 
   void _sortFlights(String sortBy) {
@@ -131,41 +50,34 @@ class _FlightListScreenState extends State<FlightListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Flight Results',
+          AppStrings.flightResults,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue.shade600,
-        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Column(
         children: [
           Container(
-            color: Colors.blue.shade600,
+            color: AppTheme.primaryBlueShade600,
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${widget.departure} → ${widget.arrival}',
+                  Formatters.formatRoute(widget.departure, widget.arrival),
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: AppTheme.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '${widget.date.day}/${widget.date.month}/${widget.date.year} • ${widget.passengers} ${widget.passengers == 1 ? 'Passenger' : 'Passengers'}',
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
+                  '${Formatters.formatDate(widget.date)} • ${Formatters.formatPassengerCount(widget.passengers)}',
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -177,15 +89,15 @@ class _FlightListScreenState extends State<FlightListScreen> {
                             : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: selectedSort == 'price'
-                              ? Colors.white
-                              : Colors.blue.shade700,
+                              ? AppTheme.white
+                              : AppTheme.primaryBlueShade700,
                         ),
                         child: Text(
-                          'By Price',
+                          AppStrings.byPrice,
                           style: TextStyle(
                             color: selectedSort == 'price'
-                                ? Colors.blue.shade600
-                                : Colors.white,
+                                ? AppTheme.primaryBlueShade600
+                                : AppTheme.white,
                           ),
                         ),
                       ),
@@ -198,15 +110,15 @@ class _FlightListScreenState extends State<FlightListScreen> {
                             : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: selectedSort == 'duration'
-                              ? Colors.white
-                              : Colors.blue.shade700,
+                              ? AppTheme.white
+                              : AppTheme.primaryBlueShade700,
                         ),
                         child: Text(
-                          'By Duration',
+                          AppStrings.byDuration,
                           style: TextStyle(
                             color: selectedSort == 'duration'
-                                ? Colors.blue.shade600
-                                : Colors.white,
+                                ? AppTheme.primaryBlueShade600
+                                : AppTheme.white,
                           ),
                         ),
                       ),

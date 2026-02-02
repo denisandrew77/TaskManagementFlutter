@@ -4,10 +4,7 @@ import '../models/flight.dart';
 class FlightDetailsScreen extends StatelessWidget {
   final Flight flight;
 
-  const FlightDetailsScreen({
-    Key? key,
-    required this.flight,
-  }) : super(key: key);
+  const FlightDetailsScreen({Key? key, required this.flight}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +44,7 @@ class FlightDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'Flight Number: ${flight.flightNumber}',
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                 ],
               ),
@@ -73,10 +67,7 @@ class FlightDetailsScreen extends StatelessWidget {
                 children: [
                   const Text(
                     'Flight Route',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   Row(
@@ -87,10 +78,7 @@ class FlightDetailsScreen extends StatelessWidget {
                         children: [
                           const Text(
                             'Departure',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
                           ),
                           const SizedBox(height: 4),
                           Text(
@@ -132,10 +120,7 @@ class FlightDetailsScreen extends StatelessWidget {
                         children: [
                           const Text(
                             'Arrival',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
                           ),
                           const SizedBox(height: 4),
                           Text(
@@ -178,28 +163,19 @@ class FlightDetailsScreen extends StatelessWidget {
                 children: [
                   const Text(
                     'Aircraft Details',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Icon(
-                        Icons.flight,
-                        color: Colors.blue.shade600,
-                      ),
+                      Icon(Icons.flight, color: Colors.blue.shade600),
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Aircraft Type',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
                           ),
                           Text(
                             flight.aircraftType,
@@ -215,20 +191,14 @@ class FlightDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      Icon(
-                        Icons.event_seat,
-                        color: Colors.blue.shade600,
-                      ),
+                      Icon(Icons.event_seat, color: Colors.blue.shade600),
                       const SizedBox(width: 12),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Available Seats',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
                           ),
                           Text(
                             '${flight.seats} seats available',
@@ -258,10 +228,7 @@ class FlightDetailsScreen extends StatelessWidget {
                 children: [
                   const Text(
                     'Price per Passenger',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   Text(
                     '\$${flight.price.toStringAsFixed(2)}',

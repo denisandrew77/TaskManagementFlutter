@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../common/app_strings.dart';
+import '../common/app_theme.dart';
 import '../models/flight.dart';
+import '../utils/formatters.dart';
 import '../screens/flight_booking.dart' as booking_screen;
 
 class ExpandableFlightCard extends StatefulWidget {
@@ -27,17 +30,7 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      decoration: AppTheme.cardDecoration(),
       child: Column(
         children: [
           GestureDetector(
@@ -61,16 +54,19 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
-                          color: Colors.blue.shade100,
+                          color: AppTheme.primaryBlueShade100,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           widget.flight.flightNumber,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.blue.shade900,
+                            color: AppTheme.primaryBlueShade900,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -95,7 +91,7 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
                             widget.flight.departureCity,
                             style: const TextStyle(
                               fontSize: 12,
-                              color: Colors.grey,
+                              color: AppTheme.grey,
                             ),
                           ),
                         ],
@@ -104,14 +100,14 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
                         children: [
                           Icon(
                             Icons.flight_takeoff,
-                            color: Colors.blue.shade600,
+                            color: AppTheme.primaryBlueShade600,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             widget.flight.duration,
                             style: const TextStyle(
                               fontSize: 10,
-                              color: Colors.grey,
+                              color: AppTheme.grey,
                             ),
                           ),
                         ],
@@ -130,7 +126,7 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
                             widget.flight.arrivalCity,
                             style: const TextStyle(
                               fontSize: 12,
-                              color: Colors.grey,
+                              color: AppTheme.grey,
                             ),
                           ),
                         ],
@@ -142,16 +138,12 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${widget.flight.price.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                        ),
+                        Formatters.formatPrice(widget.flight.price),
+                        style: AppTheme.priceStyle,
                       ),
                       Icon(
                         isExpanded ? Icons.expand_less : Icons.expand_more,
-                        color: Colors.blue.shade600,
+                        color: AppTheme.primaryBlueShade600,
                       ),
                     ],
                   ),
@@ -163,41 +155,39 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
-                border: Border(
-                  top: BorderSide(color: Colors.grey.shade200),
-                ),
+                color: AppTheme.grey50,
+                border: Border(top: BorderSide(color: AppTheme.grey200)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Flight Details',
+                    AppStrings.flightDetails,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                      color: AppTheme.grey,
                     ),
                   ),
                   const SizedBox(height: 12),
                   _DetailRow(
                     icon: Icons.flight,
-                    label: 'Aircraft',
+                    label: AppStrings.aircraft,
                     value: widget.flight.aircraftType,
                   ),
                   const SizedBox(height: 8),
                   _DetailRow(
                     icon: Icons.event_seat,
-                    label: 'Seat Pitch',
+                    label: AppStrings.seatPitch,
                     value: widget.flight.seatPitch,
                   ),
                   const SizedBox(height: 8),
                   _DetailRow(
                     icon: Icons.restaurant,
-                    label: 'Meal Service',
+                    label: AppStrings.mealService,
                     value: widget.flight.mealProvided
                         ? widget.flight.mealType
-                        : 'Not provided',
+                        : AppStrings.notProvided,
                     valueColor: widget.flight.mealProvided
                         ? Colors.green
                         : Colors.orange,
@@ -205,8 +195,9 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
                   const SizedBox(height: 8),
                   _DetailRow(
                     icon: Icons.chair,
-                    label: 'Available Seats',
-                    value: '${widget.flight.seats} seats',
+                    label: AppStrings.availableSeats,
+                    value:
+                        '${widget.flight.seats} ${AppStrings.seatsRemaining}',
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
@@ -216,25 +207,26 @@ class _ExpandableFlightCardState extends State<ExpandableFlightCard> {
                         Navigator.push(
                           widget.context,
                           MaterialPageRoute(
-                            builder: (context) => booking_screen.FlightBookingScreen(
-                              flight: widget.flight,
-                              passengers: widget.passengers,
-                            ),
+                            builder: (context) =>
+                                booking_screen.FlightBookingScreen(
+                                  flight: widget.flight,
+                                  passengers: widget.passengers,
+                                ),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green.shade600,
+                        backgroundColor: AppTheme.successGreen,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       child: const Text(
-                        'Book Flight',
+                        AppStrings.bookNow,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppTheme.white,
                         ),
                       ),
                     ),
@@ -265,21 +257,14 @@ class _DetailRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 20,
-          color: Colors.blue.shade600,
-        ),
+        Icon(icon, size: 20, color: AppTheme.primaryBlueShade600),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               label,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
             ),
             Text(
               value,
